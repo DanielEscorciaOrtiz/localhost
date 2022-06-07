@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Localhost</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="./materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="./materialize.min.js"></script>
+    <style>
+        #form {
+            margin-top: 2em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row valign-wrapper">
+        <div class="col s8 offset-s2">
+            <div class="divider"></div>
+            <form id="form" class="center-align">
+                Localhost:
+                <div class="input-field inline">
+                    <input name="port" id="port_inline" type="number" class="validate" value="3000" placeholder="3000"
+                        required="required">
+                    <label for="port_inline">Port</label>
+                </div>
+                <button class="waves-effect waves-light btn">Go!</button>
+            </form>
+            <div class="col s8 offset-s2">
+                <h5>History</h5>
+                <div class="divider"></div>
+                <div id="ports" class="collection"></div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        jsonStorage = {
+            get(key) {
+                try {
+                    return JSON.parse(localStorage.getItem(key));
+                } catch (error) {
+                    return null;
+                };
+            },
+            set(key, pojo) {
+                return localStorage.setItem(key, JSON.stringify(pojo));
+            },
+        };
+        class PortStorage {
+            #key = "ports";
+            /**
+             * @type {Set<string>}
+             */
+            #ports = new Set();
+            /**
+             * @param {Set<string>} ports
+                */
+            #set(ports) {
+                jsonStorage.set(this.#key, [...ports]);
+                this.#ports = new Set(ports);
+                this?.onChange();
+            };
+            /**
+             * @type {()=>void}
+             */
+            onChange;
+            init() {
+                const ports = jsonStorage.get(this.#key);
+                this.#set(ports ?? new Set());
+            };
+            get() {
+                return [...this.#ports];
+            };
+            /**
+             * @param {string} port
+             */
+            add(port) {
+                const set = this.#ports;
+                set.add(port);
+                this.set(set);
+            };
+            /**
+             * @param {string} port
+             */
+            remove(port) {
+                const set = this.#ports;
+                set.delete(port);
+                this.set(set);
+            };
+        };
+    </script>
+    <script type="text/javascript">
+
+        const $form = document.getElementById("form");
+        const $ports = document.getElementById("ports");
+
+        const portStorage = new PortStorage();
+
+        const getUrl = (port) => `http://localhost:${port}`;
+
+        const createPortItem = function (port) {
+            const portItem = document.createElement("a");
+            portItem.className = "collection-item";
+            portItem.href = getUrl(port);
+            portItem.target = "_blank";
+            portItem.textContent = port;
+            return portItem;
+        };
+
+        portStorage.onChange = function () {
+            const ports = portStorage.get();
+            const portItems = document.createDocumentFragment();
+            for (const port of ports) {
+                const portItem = createPortItem(port);
+                portItems.appendChild(portItem);
+            };
+            $ports.innerHTML = "";
+            $ports.appendChild(portItems);
+        };
+
+        $form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const port = event?.target?.elements?.port?.value;
+            if (!port) return;
+            portStorage.add(port);
+            const url = getUrl(port);
+            window.open(url, "_blank");
+        });
+
+        window.addEventListener("load", () => {
+            portStorage.init();
+        });
+
+    </script>
+</body>
+
+</html>

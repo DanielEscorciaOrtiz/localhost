@@ -1,0 +1,15 @@
+{
+  "name": "localhost",
+  "version": "1.0.0",
+  "description": "Simple localhost port redirecter",
+  "main": "index.html",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "start": "live-server --port=3000 --host=localhost"
+  },
+  "devDependencies": {
+    "live-server": "^1.1.0"
+  }
+}
