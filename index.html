@@ -46,8 +46,8 @@
                     return null;
                 };
             },
-            set(key, pojo) {
-                return localStorage.setItem(key, JSON.stringify(pojo));
+            set(key, json) {
+                return localStorage.setItem(key, JSON.stringify(json));
             },
         };
         class PortStorage {

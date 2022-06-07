@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Simple localhost port redirecter",
   "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DanielEscorciaOrtiz/localhost"
+  },
   "keywords": [
     "localhost"
   ],
