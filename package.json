@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "Simple localhost port redirecter",
   "main": "index.html",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "localhost"
+  ],
+  "license": "MIT",
   "scripts": {
     "start": "live-server --port=3000 --host=localhost"
   },
