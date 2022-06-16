@@ -81,7 +81,7 @@
             add(port) {
                 const set = this.#ports;
                 set.add(port);
-                this.set(set);
+                this.#set(set);
             };
             /**
              * @param {string} port
@@ -89,7 +89,7 @@
             remove(port) {
                 const set = this.#ports;
                 set.delete(port);
-                this.set(set);
+                this.#set(set);
             };
         };
     </script>
